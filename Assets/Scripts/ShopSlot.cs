@@ -16,7 +16,7 @@ public class ShopSlot : MonoBehaviour
     public int _ItemAmount;
     public TMP_Text buyPriceText;
     public TMP_Text moneyText;
-    public int money;
+    private int money;
 
 
     // Start is called before the first frame update
@@ -26,6 +26,8 @@ public class ShopSlot : MonoBehaviour
         itemName.text = itemToBuy.GetComponent<Spawn>().itemName;
         itemImage.sprite = itemToBuy.GetComponent<SpriteRenderer>().sprite;
         buyPriceText.text = itemToBuy.GetComponentInChildren<Spawn>().itemPrice + "Dollars";
+
+        money = 100;
     }
 
     // Update is called once per frame
@@ -63,6 +65,24 @@ public class ShopSlot : MonoBehaviour
 
     public void Sell()
     {
+        for (int i = 0; i < inventory.slots.Length; i++)
+        {
+            if (inventory.slots[i].transform.GetComponent<SlotScript>().amount != 0)
+            {
+                //stack items
+                if (itemName.text == inventory.slots[i].transform.GetComponentInChildren<Spawn>().itemName)
+                {
+                    _ItemAmount += 1;
+                    inventory.slots[i].GetComponent<SlotScript>().amount -= 1;
+                    money += itemToBuy.GetComponentInChildren<Spawn>().itemPrice/2;
 
+                    if(inventory.slots[i].GetComponent<SlotScript>().amount == 0)
+                    {
+                        GameObject.Destroy(inventory.slots[i].transform.GetComponentInChildren<Spawn>().gameObject);
+                    }
+                    break;
+                }
+            }
+        }
     }
 }
