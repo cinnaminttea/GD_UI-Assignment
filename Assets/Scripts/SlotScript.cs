@@ -11,6 +11,7 @@ public class SlotScript : MonoBehaviour
     public int amount;
     public TMP_Text ItemName;
 
+
     // Start is called before the first frame update
     void Start()
     {

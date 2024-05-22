@@ -25,7 +25,7 @@ public class ShopSlot : MonoBehaviour
         inventory = FindObjectOfType<BackpackController>();
         itemName.text = itemToBuy.GetComponent<Spawn>().itemName;
         itemImage.sprite = itemToBuy.GetComponent<SpriteRenderer>().sprite;
-        buyPriceText.text = itemToBuy.GetComponentInChildren<Spawn>().itemPrice + "Dollars";
+        buyPriceText.text = "$" + itemToBuy.GetComponentInChildren<Spawn>().itemPrice;
 
         money = 100;
     }
@@ -34,13 +34,14 @@ public class ShopSlot : MonoBehaviour
     void Update()
     {
         itemAmount.text = "Amount:" + _ItemAmount.ToString();
+        moneyText.text = "$" + money.ToString();
     }
 
     public void Buy()
     {
         for(int i  = 0; i < inventory.slots.Length; i++)
         {
-            if (inventory.isFull[i] == true && inventory.slots[i].transform.GetComponent<SlotScript>().amount < 20 && money >= itemToBuy.GetComponentInChildren<Spawn>().itemPrice && _ItemAmount > 0)
+            if (inventory.isFull[i] == true && inventory.slots[i].transform.GetComponent<SlotScript>().amount < 2 && money >= itemToBuy.GetComponentInChildren<Spawn>().itemPrice && _ItemAmount > 0)
             {
                 if(itemName.text == inventory.slots[i].transform.GetComponentInChildren<Spawn>().itemName)
                 {
@@ -52,7 +53,7 @@ public class ShopSlot : MonoBehaviour
             }
             else if (inventory.isFull[i] == false && money >= itemToBuy.GetComponentInChildren<Spawn>().itemPrice && _ItemAmount > 0)
             {
-                _ItemAmount += 1;
+                _ItemAmount -= 1;
                 //inventory.slots[i].GetComponent<SlotScript>().ItemName.text = itemName.text;
                 inventory.isFull[i] = true;
                 Instantiate(itemToBuy, inventory.slots[i].transform, false);
@@ -60,6 +61,7 @@ public class ShopSlot : MonoBehaviour
                 break;
             }
         }
+
         
     }
 
@@ -74,7 +76,7 @@ public class ShopSlot : MonoBehaviour
                 {
                     _ItemAmount += 1;
                     inventory.slots[i].GetComponent<SlotScript>().amount -= 1;
-                    money += itemToBuy.GetComponentInChildren<Spawn>().itemPrice/2;
+                    money += itemToBuy.GetComponentInChildren<Spawn>().itemPrice;
 
                     if(inventory.slots[i].GetComponent<SlotScript>().amount == 0)
                     {

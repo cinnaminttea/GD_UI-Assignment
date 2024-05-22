@@ -17,26 +17,29 @@ public class ItemMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void OnCollisionEnter2D(Collision2D collision)
+    void FixedUpdate()
     {
-        for (int i = 0; i < inventory.slots.Length; i++)
+        if(Input.GetMouseButtonDown(0))
         {
-            if (inventory.isFull[i] == true && inventory.slots[i].transform.GetComponent<SlotScript>().amount < 2)
+            for (int i = 0; i < inventory.slots.Length; i++)
             {
-                //stack items
-                if (itemName == inventory.slots[i].transform.GetComponentInChildren<Spawn>().itemName)
+                if (inventory.isFull[i] == true && inventory.slots[i].transform.GetComponent<SlotScript>().amount < 2)
                 {
-                    Destroy(gameObject);
-                    inventory.slots[i].GetComponent<SlotScript>().amount += 1;
-                    break;
-                }
-                else if (inventory.isFull[i] == false)
-                {
-                    inventory.isFull[i] = true;
-                    Instantiate(item, inventory.slots[i].transform, false);
-                    inventory.slots[i].GetComponent<SlotScript>().amount += 1;
-                    Destroy(gameObject);
-                    break;
+                    //stack items
+                    if (itemName == inventory.slots[i].transform.GetComponentInChildren<Spawn>().itemName)
+                    {
+                        Destroy(gameObject);
+                        inventory.slots[i].GetComponent<SlotScript>().amount += 1;
+                        break;
+                    }
+                    else if (inventory.isFull[i] == false)
+                    {
+                        inventory.isFull[i] = true;
+                        Instantiate(item, inventory.slots[i].transform, false);
+                        inventory.slots[i].GetComponent<SlotScript>().amount += 1;
+                        Destroy(gameObject);
+                        break;
+                    }
                 }
             }
         }
